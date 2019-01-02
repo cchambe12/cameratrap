@@ -1,0 +1,17 @@
+The Berkshire Wildlife Linkage: Camera Trap Project
+2 January 2018 - started by Cat Chamberlain
+
+The primary aim of this project is to efficiently and effectively process all camera trap data. The first objective is to find an interface, machine-learning tool or create new code to identify relevant images and remove superfluous data. The second objective is to design a method to process the remaining photos - ideally through a citizen science project. 
+
+Timeline:
+	1. End of January: Start by going through resources provided by Laura
+ 	   a) Learn about each method and write up the pros and cons
+	   b) Test run with a sample set of data to measure accuracy 
+	2. January: Reach out to Andy Wood to establish correspondence  
+	3. February: Based on further research and possible suggestions from Andy 
+	   a) reach out to other potential collaborators (i.e., UMass Amherst?)
+	   b) determine if there are alternative/additional programs to investigate 
+	4. End of February: settle on best approach and analyze data
+	5. End of March: investigate Zooniverse.org or similar
+	   a) for potential Citizen Science platform to process the remaining photos 
+	6. April: work on implementing citizen science program and a training protocol 
