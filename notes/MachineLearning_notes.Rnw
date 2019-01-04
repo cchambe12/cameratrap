@@ -6,6 +6,7 @@
 
 \begin{document}
 \section*{Camera Trap Analysis Methods:}
+\textbf{Places to start:}
 \begin{enumerate}
 \item Laura mentioned a handful of websites to investigate
   \begin{enumerate}
@@ -32,6 +33,19 @@
     \item Code from recent set of papers (2017 and 2018) looking at different machine learning tools
     \item Seems to be in R! and based on North American species
     \end{enumerate}
+\end{enumerate}
+\end{enumerate}
+
+\noindent \textbf{Potential Approaches:}
+\begin{enumerate}
+\item Wild.ID, Own Code, Zooniverse
+  \begin{enumerate}
+  \item Start with Wild.ID to use for training. Then transition to MLWIC method to set up machine learning training specific to North America. Then use this new machine learning to remove blanks and people and group data into birds and mammals. From there, can set up citizen science project.
+  \end{enumerate}
+\item Zooniverse, Training Own Code
+  \begin{enumerate}
+  \item Start with zooniverse to help train the machine learning, then make own code to sort through photos. Caveat - inappropriate photos
+  \end{enumerate}
 \end{enumerate}
 
 
