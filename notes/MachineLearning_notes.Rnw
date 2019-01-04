@@ -1,0 +1,38 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[top=1.00in, bottom=1.0in, left=1.1in, right=1.1in]{geometry}
+\usepackage{graphicx}
+
+%\signature{}
+
+\begin{document}
+\section*{Camera Trap Analysis Methods:}
+\begin{enumerate}
+\item Laura mentioned a handful of websites to investigate
+  \begin{enumerate}
+  \item https://wildlifeobserver.net/ for storing images
+    \begin{enumerate}
+    \item Caveat: can only upload one image at a time... yikes
+    \end{enumerate}
+  \item https://wildlifeinsights.org/ 
+    \begin{enumerate}
+    \item Not all on one platform. Use either eMammal or Wild.ID. 
+    \item Started with Wild.ID since it's through CI's github, download onto desktop. Does not seem compatible with laptop. Can't select `Create Project'
+    \item Need to pay for eMammal - scratch that plan
+    \end{enumerate}
+  \item http://drivendata.co/blog/camera-trap-wildlife-winners/ 
+    \begin{enumerate}
+    \item Caveat: seems to be in Python and only focuses on African fauna. 
+    \end{enumerate}
+  \end{enumerate}
+  
+\item Here are a handful of other potential resources:
+  \begin{enumerate}
+  \item https://github.com/mikeyEcology/MLWIC
+    \begin{enumerate}
+    \item Code from recent set of papers (2017 and 2018) looking at different machine learning tools
+    \item Seems to be in R! and based on North American species
+    \end{enumerate}
+\end{enumerate}
+
+
+\end{document}
