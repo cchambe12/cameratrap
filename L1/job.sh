@@ -14,8 +14,8 @@ cpath=$(pwd)
 cd ~
 source .bashrc
 cd $cpath
-python train.py --architecture resnet --depth 18 --path_prefix /lscratch/datasets/usda/ --num_gpus 2 --batch_size 256 --data_info L1WENEW_train2.csv --delimiter , --num_classes 28 --log_dir USDA18MTN
-python eval.py --architecture resnet --depth 18  --log_dir USDA18MTN --path_prefix /lscratch/datasets/usda/ --batch_size 512 --data_info L1WENEW_test2.csv --delimiter , --save_predictions USDA18MTN_preds.txt --num_classes 28
+python train.py --architecture resnet --depth 18 --path_prefix /lscratch/datasets/usda/ --num_gpus 2 --batch_size 256 --data_info L1WENEW_train2.csv --delimiter , --num_classes 28 --log_dir training_output
+python eval.py --architecture resnet --depth 18  --log_dir training_output --path_prefix /lscratch/datasets/usda/ --batch_size 512 --data_info L1WENEW_test2.csv --delimiter , --save_predictions training_output_preds.txt --num_classes 28
 
 #python train.py --architecture resnet --depth 18 --path_prefix /lscratch/datasets/usda/ --num_gpus 2 --batch_size 256 --data_info L1WEN_train.csv --delimiter , --retrain_from USDA18 --num_classes 28 --log_dir USDA182
 #python eval.py --architecture resnet --depth 18  --log_dir USDA182 --path_prefix /lscratch/datasets/usda/ --batch_size 512 --data_info L1WEN_test.csv --delimiter , --save_predictions USDA18_preds.txt --num_classes 28

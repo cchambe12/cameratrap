@@ -10,52 +10,66 @@ graphics.off()
 # Load libraries
 #library(devtools)
 #devtools::install_github("mikeyEcology/MLWIC")
-library(MLWIC)
 library(reticulate)
 library(tensorflow)
+library(MLWIC)
+
+setup(python_loc = "/Users/CatherineChamberlain/anaconda3/bin/python")
 
 setwd("~/Documents/git/cameratrap")
 
 ## Step 2: load tensorflow - 
-devtools::install_github("rstudio/tensorflow")
-library(tensorflow)
-install_tensorflow()
+#devtools::install_github("rstudio/tensorflow")
+#library(tensorflow)
+#install_tensorflow()
 sess = tf$Session()
 hello <- tf$constant('Hello, TensorFlow!')
 sess$run(hello)
 
 # Step 3: edit names in dataframe
-d<-read.csv("image_labels.csv")
-colnames(d)<-c("a", "b")
-d$a<-as.character(d$a)
-colnames(d)<-NULL
-write.csv(d, file="~/Documents/git/cameratrap/image_labels.csv", row.names = FALSE)
+#d<-read.csv("image_labels.csv")
+#d$a<-substr(d$EK000002.JPG.0, 0, 12)
+#d$b<-substr(d$EK000002.JPG.0, 14, 14)
+#d<-d[,-1]
+#colnames(d)<-c("a", "b")
+#d$a<-as.character(d$a)
+#d<-unname(d)
+#write.csv(d, file="~/Documents/git/cameratrap/image_labels.csv", row.names=FALSE)
 
 
+if(FALSE){
+
+  x<-read.csv("train_image_labels.csv", header=TRUE)
+  
 ## Prepare for Training using Wild.ID classifications
 tr<-read.csv("Wild_ID_test_Default_Event_test.csv", header=TRUE)
+trx<-subset(tr, select=c("Raw.Name", "Photo.Type"))
+
+trx$ID <- NA
+trx$ID<-ifelse(trx$Photo.Type=="Blank", 0, trx$ID)
+trx$ID<-ifelse(trx$Photo.Type=="Misfired", 1, trx$ID)
+trx$ID<-ifelse(trx$Photo.Type=="Animal", 2, trx$ID)
+trx$ID <- as.numeric(trx$ID)
+
+#colnames(trx) <- NULL
+#write.csv(trx, file="train_image_labels.csv", row.names=FALSE, eol = "\r\n")
 
 
-
-
-
-
-train(path_prefix = "~/Documents/git/cameratrap/images", # this is the absolute path to the images. 
-      data_info = "~/Documents/git/cameratrap/train_image_labels.csv", # this is the location of the csv containing image information. It has Unix linebreaks and no headers.
-      model_dir = "~/Documents/git/cameratrap", # assuming this is where you stored the L1 folder in Step 3 of the instructions: github.com/mikeyEcology/MLWIC/blob/master/README
+train(path_prefix = "/Users/CatherineChamberlain/Documents/git/cameratrap/images", # this is the absolute path to the images. 
+      data_info = "/Users/CatherineChamberlain/Documents/git/cameratrap/train_image_labels.csv", # this is the location of the csv containing image information. It has Unix linebreaks and no headers.
+      model_dir = "/Users/CatherineChamberlain/Documents/git/cameratrap", # assuming this is where you stored the L1 folder in Step 3 of the instructions: github.com/mikeyEcology/MLWIC/blob/master/README
       python_loc = "/usr/local/bin/", # the location of Python on your computer. 
       num_classes = 3, # this is the number of species from our model. When you train your own model, you will replace this with the number of species/groups of species in your dataset
-      log_dir_train = "training_output" # this will be a folder that contains the trained model (call it whatever you want). You will specify this folder as the "log_dir" when you classify images using this trained model. For example, the log_dir for the model included in this package is called "USDA182"
+      log_dir_train = "/Users/CatherineChamberlain/Documents/git/cameratrap/training_output" # this will be a folder that contains the trained model (call it whatever you want). You will specify this folder as the "log_dir" when you classify images using this trained model. For example, the log_dir for the model included in this package is called "USDA182"
 )
 
-
+}
 
 
 
 classify(path_prefix = "/Users/CatherineChamberlain/Documents/git/cameratrap/images", # this is the absolute path to the images.
-         log_dir = "training_output",  
-         data_info = "~/Documents/git/cameratrap/image_labels.csv", # this is the location of the csv containing image information. It has Unix linebreaks and no headers.
-         model_dir = "~/Documents/git/cameratrap", # assuming this is where you stored the L1 folder in Step 3 of the instructions: github.com/mikeyEcology/MLWIC/blob/master/README
+         data_info = "/Users/CatherineChamberlain/Documents/git/cameratrap/image_labels.csv", # this is the location of the csv containing image information. It has Unix linebreaks and no headers.
+         model_dir = "/Users/CatherineChamberlain/Documents/git/cameratrap", # assuming this is where you stored the L1 folder in Step 3 of the instructions: github.com/mikeyEcology/MLWIC/blob/master/README
          python_loc = "/usr/local/bin/", # the location of Python on your computer. 
          save_predictions = "model_predictions.txt" # this is the default and you should use it unless you have reason otherwise.
 )
@@ -65,3 +79,39 @@ make_output(output_location = "~/Documents/git/cameratrap", # the output csv wil
             model_dir = "~/Documents/git/cameratrap", # the location where I stored the L1 folder
             saved_predictions = "model_predictions.txt" # the same name that I used for save_predictions in the classify function (if I didn't use default, I would need to change this).
 )
+
+
+######## Now check out example_results.cvs vs wild.id results
+exam <- read.csv("example_results.csv", header=TRUE)
+exam$Raw.Name <- substr(exam$fileName, 61, 72)
+
+idnames <- read.csv("classID_names.csv", header=TRUE)
+
+exam$Photo.Type.Sp <- NA
+for(i in c(1:nrow(exam))){
+  for(j in c(1:nrow(idnames)))
+      exam$Photo.Type.Sp[i] <- ifelse(exam$guess1[i] == idnames$Class.ID[j], idnames$Group.name[j], exam$Photo.Type.Sp[i])
+  
+  
+}
+
+examx <- subset(exam, select = c("Raw.Name", "Photo.Type.Sp", "guess1"))
+
+verify <- full_join(examx, trx)
+
+animals <- c(0:10, 12:24, 25)
+
+verify$hit <- NA
+verify$hit <- ifelse(verify$Photo.Type == "Misfired" & verify$Photo.Type.Sp == "Human",
+                     1, verify$hit)
+verify$hit <- ifelse(verify$Photo.Type == "Blank" & verify$Photo.Type.Sp == "Empty",
+                     1, verify$hit)
+verify$hit <- ifelse(verify$Photo.Type == "Animal" & verify$guess1 %in% animals,
+                     1, verify$hit)
+
+verify$hit <- ifelse(is.na(verify$hit), 0, verify$hit)
+
+accuracy = length(verify$hit[(verify$hit==1)]) / length(verify$hit) # 71.8% accuracy
+
+
+
