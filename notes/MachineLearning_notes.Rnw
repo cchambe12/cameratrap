@@ -17,12 +17,16 @@
   \item https://wildlifeinsights.org/ 
     \begin{enumerate}
     \item Not all on one platform. Use either eMammal or Wild.ID. 
-    \item Started with Wild.ID since it's through CI's github, download onto desktop. Does not seem compatible with laptop. Can't select `Create Project'
+    \item Started with Wild.ID since it's through CI's github, download onto desktop. Does not seem compatible with laptop. Can't select `Create Project'. Works great on Desktop!
     \item Need to pay for eMammal - scratch that plan
     \end{enumerate}
   \item http://drivendata.co/blog/camera-trap-wildlife-winners/ 
     \begin{enumerate}
     \item Caveat: seems to be in Python and only focuses on African fauna. 
+    \item Need to downgrade to Python 3.6 (pip install python=3.6)
+    \item Need to downgrade to Pip 8 (pip install pip==8.1.1)
+    \item Then can install zamba!
+    \item Running - very slow! Takes about 20 seconds per image I think
     \end{enumerate}
   \end{enumerate}
   
@@ -47,6 +51,13 @@
   \item Start with zooniverse to help train the machine learning, then make own code to sort through photos. Caveat - inappropriate photos
   \end{enumerate}
 \end{enumerate}
+
+\noindent \textbf{First Stab:}
+\begin{enumerate}
+\item  Used Mikey Ecology github protocol. Compared output to Wild.ID images. 71.8\% accurate
+\item Thought a lot of the humans were animals -- which could be a problem. 
+\end{enumerate}
+
 
 
 \end{document}

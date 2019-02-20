@@ -14,7 +14,7 @@ library(reticulate)
 library(tensorflow)
 library(MLWIC)
 
-setup(python_loc = "/Users/CatherineChamberlain/anaconda3/bin/python")
+setup(python_loc = "/Users/CatherineChamberlain/anaconda3/bin/python") ## takes a minute or two!
 
 setwd("~/Documents/git/cameratrap")
 
@@ -22,7 +22,8 @@ setwd("~/Documents/git/cameratrap")
 #devtools::install_github("rstudio/tensorflow")
 #library(tensorflow)
 #install_tensorflow()
-sess = tf$Session()
+sess = tf$Session() ## Sometimes gives error "I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA"
+ # Doesn't seem to pose a problem for our uses
 hello <- tf$constant('Hello, TensorFlow!')
 sess$run(hello)
 
@@ -38,22 +39,34 @@ sess$run(hello)
 
 
 if(FALSE){
-
-  x<-read.csv("train_image_labels.csv", header=TRUE)
   
 ## Prepare for Training using Wild.ID classifications
-tr<-read.csv("Wild_ID_test_Default_Event_test.csv", header=TRUE)
-trx<-subset(tr, select=c("Raw.Name", "Photo.Type"))
+tr<-read.csv("WildlifeDetections_CameraTrap.csv", header=TRUE)
+trx<-subset(tr, select=c("Sampling.Event", "Raw.Name", "Genus", "Species"))
 
-trx$ID <- NA
-trx$ID<-ifelse(trx$Photo.Type=="Blank", 0, trx$ID)
-trx$ID<-ifelse(trx$Photo.Type=="Misfired", 1, trx$ID)
-trx$ID<-ifelse(trx$Photo.Type=="Animal", 2, trx$ID)
-trx$ID <- as.numeric(trx$ID)
+trx$imageID <- paste(trx$Sampling.Event, trx$Raw.Name, sep="_")
+trx$animaltype <- paste(trx$Genus, trx$Species, sep="_")
+trx$class <- as.integer(as.factor(trx$animaltype))
 
-#colnames(trx) <- NULL
-#write.csv(trx, file="train_image_labels.csv", row.names=FALSE, eol = "\r\n")
+#specieslist <- subset(trx, select=c("animaltype", "class"))
+#specieslist <- specieslist[!duplicated(specieslist),]
+#write.csv(specieslist, file="listofspecies.csv", row.names=FALSE)
 
+trx <- subset(trx, select=c("imageID", "class"))
+images <- trx
+
+colnames(trx) <- NULL
+write.csv(trx, file="train_image_labels.csv", row.names=FALSE)
+
+### Prepare for download...
+images$camera <- substr(images$imageID, 0, 6)
+images$camera <- ifelse(images$camera == "ATXing", substr(images$imageID, 8, 13), images$camera)
+
+cam01A <- images[(images$camera=="CAM01A"),]
+
+file.copy("source_file.txt", "destination_folder")
+
+fileNames <- Sys.glob("*.csv")
 
 train(path_prefix = "/Users/CatherineChamberlain/Documents/git/cameratrap/images", # this is the absolute path to the images. 
       data_info = "/Users/CatherineChamberlain/Documents/git/cameratrap/train_image_labels.csv", # this is the location of the csv containing image information. It has Unix linebreaks and no headers.
@@ -75,9 +88,9 @@ classify(path_prefix = "/Users/CatherineChamberlain/Documents/git/cameratrap/ima
 )
 
 make_output(output_location = "~/Documents/git/cameratrap", # the output csv will be stored on my dekstop
-            output_name = "example_results.csv", # the name of the csv I want to create with my output
+            output_name = "zamba_results.csv", # the name of the csv I want to create with my output
             model_dir = "~/Documents/git/cameratrap", # the location where I stored the L1 folder
-            saved_predictions = "model_predictions.txt" # the same name that I used for save_predictions in the classify function (if I didn't use default, I would need to change this).
+            saved_predictions = "output_class_names.txt" # the same name that I used for save_predictions in the classify function (if I didn't use default, I would need to change this).
 )
 
 
@@ -112,6 +125,13 @@ verify$hit <- ifelse(verify$Photo.Type == "Animal" & verify$guess1 %in% animals,
 verify$hit <- ifelse(is.na(verify$hit), 0, verify$hit)
 
 accuracy = length(verify$hit[(verify$hit==1)]) / length(verify$hit) # 71.8% accuracy
+
+misses <- subset(verify, verify$hit == 0)
+mis.humans <- subset(misses, misses$Photo.Type=="Misfired")
+
+photos <- unique(mis.humans$Raw.Name)
+
+exam.humans <- exam[(exam$Raw.Name %in% photos),]
 
 
 
