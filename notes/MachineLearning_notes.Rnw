@@ -26,7 +26,8 @@
     \item Need to downgrade to Python 3.6 (pip install python=3.6)
     \item Need to downgrade to Pip 8 (pip install pip==8.1.1)
     \item Then can install zamba!
-    \item Running - very slow! Takes about 20 seconds per image I think
+    \item Running - very slow! Takes about 20 seconds per image I think and only processes videos!
+    \item Does not work for our project.
     \end{enumerate}
   \end{enumerate}
   
@@ -36,11 +37,28 @@
     \begin{enumerate}
     \item Code from recent set of papers (2017 and 2018) looking at different machine learning tools
     \item Seems to be in R! and based on North American species
+    \item Best approach so far.
     \end{enumerate}
 \end{enumerate}
 \end{enumerate}
 
 \noindent \textbf{Potential Approaches:}
+\begin{enumerate}
+\item Using all images we have access to that have already been identified, we should retrain a new model that better fits the fauna of New England. 
+  \begin{enumerate}
+  \item Issues: 
+    \begin{enumerate}
+    \item We will most likely be missing blanks and cars, which will need to be trained into the model. 
+      \begin{enumerate}
+      \item Workaround: go through and hand ID a bunch of blanks to add to the training
+      \end{enumerate}
+    \item Possibly still won't have enough photos to build a good model
+    \end{enumerate}
+  \end{enumerate}
+\end{enumerate}
+
+\begin{enumerate}
+\item Below are additional --- potentially outdated --- ideas:
 \begin{enumerate}
 \item Wild.ID, Own Code, Zooniverse
   \begin{enumerate}
@@ -48,14 +66,25 @@
   \end{enumerate}
 \item Zooniverse, Training Own Code
   \begin{enumerate}
-  \item Start with zooniverse to help train the machine learning, then make own code to sort through photos. Caveat - inappropriate photos
+  \item Start with zooniverse to help train the machine learning, then make own code to sort through photos. Caveat - inappropriate photos.
   \end{enumerate}
+\end{enumerate}
 \end{enumerate}
 
 \noindent \textbf{First Stab:}
 \begin{enumerate}
-\item  Used Mikey Ecology github protocol. Compared output to Wild.ID images. 71.8\% accurate
-\item Thought a lot of the humans were animals -- which could be a problem. 
+\item Used Mikey Ecology github protocol. Compared output to Wild.ID images. 71.8\% accurate
+\item The machine thought a lot of the humans were animals -- which could be a problem. 
+\end{enumerate}
+
+\noindent \textbf{First Stab:}
+\begin{enumerate}
+\item Issues:
+  \begin{enumerate}
+  \item Takes a long time to download images, then change names, then resize
+  \item Need a cluster to run the machine learning tool in a reasonable amount of time. Using a cluster cuts down on the time \emph{immensely}
+  \item The tool isn't terribly accurate... 
+  \end{enumerate}
 \end{enumerate}
 
 
