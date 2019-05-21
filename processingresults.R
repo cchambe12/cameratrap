@@ -10,14 +10,26 @@ graphics.off()
 library(dplyr)
 library(ggplot2)
 
+### Need to update everything... 
+if(FALSE){
+ouch <- read.csv("~/Downloads/gnarly.csv", header=FALSE)
+ouch$V1 <- gsub(".*imagesall/\\s*|'.*", '', ouch$V1)
+ouch$labels <- 0
+write.csv(ouch, file="~/Documents/git/imagesall_labels_new.csv", row.names = FALSE)
+}
+
+# Set Working directory
+setwd("~/Documents/git/cameratrap")
+
 #Load the data
-results <- read.csv("~/Desktop/test_results_usda_all.csv", header=TRUE)
-classes <- read.csv("~/Desktop/listofnames.csv", header=TRUE)
+results <- read.csv("test_results_newusda.csv", header=TRUE)
+classes <- read.csv("listofnames.csv", header=TRUE)
 
 results$image <- gsub(".*/\\s*|'.*", '', results$fileName)
 
 ## Below are classes that shouldn't be found here so I am telling the model to use the second guess if
 # its first guess is one below (e.g., wild pig)
+if(TRUE){
 errors <- c(4, 17)
 
 results <- results[(results$guess1>=0.7),]
@@ -26,8 +38,9 @@ results$modelfix<-NA
 results$modelfix <- ifelse(results$guess1==22, results$guess2, results$guess1)
 results$modelfix <- ifelse(results$guess1==1, results$guess2, results$modelfix)
 results$modelfix <- ifelse(results$modelfix%in%errors, 18, results$modelfix)
+}
 
-results$modelfix <- results$guess1
+#results$modelfix <- results$guess1
 results$camera <- gsub("_.*", '', results$image)
 
 classes$modelfix<-classes$Class.ID
@@ -49,6 +62,7 @@ results$camera <- ifelse(results$camera=="CAM6A", "CAM06A", results$camera)
 
 ### Here the model uses different classifications of species so I am standardizing the way Andy Wood identified species
 # and how that would translate to the model's classifications
+if(TRUE){
 trx$taxa <- ifelse(trx$taxa=="Vulpes vulpes", "Vulpes vulpes and Urocyon Cinereoargentus", trx$taxa)
 trx$taxa <- ifelse(trx$taxa=="Canis latrans", "Canidae", trx$taxa)
 trx$taxa <- ifelse(trx$taxa=="Sciurus carolinensis", "Sciurus spp.", trx$taxa)
@@ -68,7 +82,7 @@ trx$taxa <- ifelse(trx$taxa=="Tamias striatus", "Rodentia", trx$taxa)
 trx$taxa <- ifelse(trx$taxa=="Lontra canadensis", "Mustelidae", trx$taxa)
 trx$taxa <- ifelse(trx$taxa=="Ardea herodias", "Aves", trx$taxa)
 trx$taxa <- ifelse(trx$taxa=="Martes pennanti", "Mustelidae", trx$taxa)
-
+}
 trx<-subset(trx, select=c("camera", "image", "taxa"))
 
 trx <- left_join(trx, classes)
@@ -113,7 +127,10 @@ goober <- left_join(results.sub.noempt, location)
 rmcams <- c("CAM10A", "CAM11A", "CAM11B")
 goober <- goober[!(goober$camera%in%rmcams),]
 goober$site <- ifelse(is.na(goober$site), "CAM07A", goober$site)
-cols <- 
+#goober <- goober[!is.na()]
+library(RColorBrewer) 
+colourCount =length(unique(goober$group))
 quartz()
-ggplot(goober, aes(x=group)) + geom_bar() + theme_classic() + facet_wrap(~site) +
-  theme(axis.text.x = element_text(angle=45, hjust=0.95)) + xlab("") + ylab("Number of images")
+ggplot(goober, aes(x=group, fill=group)) + geom_bar() + theme_classic() + facet_wrap(~site) +
+  theme(axis.text.x = element_text(angle=45, hjust=0.95)) + xlab("") + ylab("Number of images") +
+  scale_fill_manual(values = colorRampPalette(brewer.pal(8, "Dark2"))(colourCount))
