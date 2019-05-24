@@ -1,0 +1,106 @@
+\documentclass[11pt,a4paper]{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage[top=1.00in, bottom=1.0in, left=1.1in, right=1.1in]{geometry}
+\usepackage{graphicx}
+%\usepackage[T1]{fontenc}
+
+%\signature{}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+\section*{Overall Goal:}
+\begin{enumerate}
+\item Provide a standardized method for identifying camera trap photos as accurately and efficiently as possible.
+  \begin{enumerate}
+  \item \emph{Ideally} we create a tool that:
+    \begin{enumerate}
+    \item Allows users to easily upload photos to an open source repository that is also accessible after photos have been identified
+    \item When photos are uploaded to this tool/interface/whatever, they are given a standardized naming (e.g., [camera.name]\_[date.range]\_[latitudexlongitude]\_[image.num].jpg) and then the interface will sort the photos on this open source repository accordingly (i.e., by camera, date, location, and time)
+    \item To create a tool that is accessible to users that have little to no experience coding
+    \item To make an end product that is:
+      \begin{enumerate}
+      \item An excel sheet with the columns: image\_name, camera\_name, date, time, latitude, longitude, temperature, Genus, species. Genus and species could be 'blank' or 'vehicle'. 
+      \item Within in excel sheet, have hyperlinks to images so user can easily download photos or verify model. \emph{Ideally} hyperlinks allow users to look at the images right before and after that image as well
+      \item Bar charts [see attached example in email]
+      \end{enumerate}
+    \end{enumerate}
+  \end{enumerate}
+\end{enumerate}
+
+\section*{Next steps:}
+\begin{enumerate}
+\item Look into Fraser Shillings new tool: https://wildlifeobserver.net/
+\item Verify Mikey Tabak's tool: https://github.com/mikeyEcology/MLWIC
+\item Do some initial investigating into alternatives options. Check Cat's notes in attached `MachineLearning\_notes.pdf'.
+\item Find a good place to store images --- ideally not on TNC's box. 
+\end{enumerate}
+
+\section*{Possible Directions:}
+\begin{enumerate}
+\item Use MLWIC repo to make a first pass at images to weed out humans, blanks and cars when the model is $>$98.5\% confident. Then...
+  \begin{enumerate}
+  \item Use another tool to identify the rest
+  \item Or train a new machine learning tool using MLWIC package that is more accurate for the Northeast (with the potential to expand)
+  \end{enumerate}
+\item Find or create an entirely new tool or interface
+\end{enumerate}
+
+\section*{Some Things to Remember:}
+\begin{enumerate}
+\item What do we do about multiple animals in one shot? If more than one deer can the model count? Or if there are two species. 
+\item Can we manage to build a tool that can differentiate between a dog and a coyote or fox?
+\item Can we make a model that is expandable? That we can tweak after this program is over at the end of the summer?
+\item Is there a way to make this useable or accessible without a cluster? Maybe a website or an online tool?
+\end{enumerate}
+
+
+
+\end{document}

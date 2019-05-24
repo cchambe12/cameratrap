@@ -1,0 +1,56 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[top=1.00in, bottom=1.0in, left=1.1in, right=1.1in]{geometry}
+\usepackage{graphicx}
+%\usepackage[T1]{fontenc}
+
+%\signature{}
+
+\begin{document}
+\section*{Overall Goal:}
+\begin{enumerate}
+\item Provide a standardized method for identifying camera trap photos as accurately and efficiently as possible.
+  \begin{enumerate}
+  \item \emph{Ideally} we create a tool that:
+    \begin{enumerate}
+    \item Allows users to easily upload photos to an open source repository that is also accessible after photos have been identified
+    \item When photos are uploaded to this tool/interface/whatever, they are given a standardized naming (e.g., [camera.name]\_[date.range]\_[latitudexlongitude]\_[image.num].jpg) and then the interface will sort the photos on this open source repository accordingly (i.e., by camera, date, location, and time)
+    \item To create a tool that is accessible to users that have little to no experience coding
+    \item To make an end product that is:
+      \begin{enumerate}
+      \item An excel sheet with the columns: image\_name, camera\_name, date, time, latitude, longitude, temperature, Genus, species. Genus and species could be 'blank' or 'vehicle'. 
+      \item Within in excel sheet, have hyperlinks to images so user can easily download photos or verify model. \emph{Ideally} hyperlinks allow users to look at the images right before and after that image as well
+      \item Bar charts [see attached example in email]
+      \end{enumerate}
+    \end{enumerate}
+  \end{enumerate}
+\end{enumerate}
+
+\section*{Next steps:}
+\begin{enumerate}
+\item Look into Fraser Shillings new tool: https://wildlifeobserver.net/
+\item Verify Mikey Tabak's tool: https://github.com/mikeyEcology/MLWIC
+\item Do some initial investigating into alternatives options. Check Cat's notes in attached `MachineLearning\_notes.pdf'.
+\item Find a good place to store images --- ideally not on TNC's box. 
+\end{enumerate}
+
+\section*{Possible Directions:}
+\begin{enumerate}
+\item Use MLWIC repo to make a first pass at images to weed out humans, blanks and cars when the model is $>$98.5\% confident. Then...
+  \begin{enumerate}
+  \item Use another tool to identify the rest
+  \item Or train a new machine learning tool using MLWIC package that is more accurate for the Northeast (with the potential to expand)
+  \end{enumerate}
+\item Find or create an entirely new tool or interface
+\end{enumerate}
+
+\section*{Some Things to Remember:}
+\begin{enumerate}
+\item What do we do about multiple animals in one shot? If more than one deer can the model count? Or if there are two species. 
+\item Can we manage to build a tool that can differentiate between a dog and a coyote or fox?
+\item Can we make a model that is expandable? That we can tweak after this program is over at the end of the summer?
+\item Is there a way to make this useable or accessible without a cluster? Maybe a website or an online tool?
+\end{enumerate}
+
+
+
+\end{document}
